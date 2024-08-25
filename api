@@ -1,0 +1,27 @@
+function generateDiagram() {
+    const problem = document.getElementById('problem').value;
+    const output = document.getElementById('diagramOutput');
+
+    if(problem.trim() === "") {
+        output.innerHTML = "Veuillez entrer un problème pour générer le diagramme.";
+        return;
+    }
+
+    // Appel à une API (exemple de pseudo-code)
+    fetch("https://api-de-votre-choix.com/genererDiagramme", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ problem: problem })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Affichage du diagramme généré
+        output.innerHTML = `<img src="${data.diagramUrl}" alt="Diagramme d'Ishikawa">`;
+    })
+    .catch(error => {
+        output.innerHTML = "Erreur lors de la génération du diagramme. Veuillez réessayer plus tard.";
+        console.error("Erreur:", error);
+    });
+}
