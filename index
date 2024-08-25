@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Diagramme d'Ishikawa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .output-group {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Générateur de Diagramme d'Ishikawa</h1>
+    
+    <div class="input-group">
+        <label for="problem">Entrez le problème :</label><br>
+        <input type="text" id="problem" name="problem" placeholder="Quel est le problème à analyser ?" size="50">
+    </div>
+    
+    <button onclick="generateDiagram()">Générer le diagramme</button>
+    
+    <div class="output-group">
+        <h2>Diagramme généré :</h2>
+        <div id="diagramOutput">
+            <!-- Le diagramme généré s'affichera ici -->
+        </div>
+    </div>
+
+    <script>
+        function generateDiagram() {
+            const problem = document.getElementById('problem').value;
+            const output = document.getElementById('diagramOutput');
+
+            if(problem.trim() === "") {
+                output.innerHTML = "Veuillez entrer un problème pour générer le diagramme.";
+                return;
+            }
+
+            // Placeholder pour intégrer l'IA gratuite
+            output.innerHTML = "Génération du diagramme pour le problème : " + problem + "<br><br>";
+            
+            // Simuler la réponse de l'IA
+            setTimeout(() => {
+                output.innerHTML += "Diagramme d'Ishikawa généré (Exemple simplifié) :<br>";
+                output.innerHTML += "<img src='https://dummyimage.com/600x400/000/fff&text=Ishikawa+Diagram+Exemple' alt='Diagramme d'Ishikawa'>";
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
