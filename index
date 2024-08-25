@@ -8,12 +8,31 @@
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
+            background-color: #f4f4f4;
         }
         .input-group {
             margin-bottom: 20px;
         }
         .output-group {
             margin-top: 20px;
+        }
+        #diagramOutput {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
         }
     </style>
 </head>
@@ -44,13 +63,27 @@
                 return;
             }
 
-            // Placeholder pour intégrer l'IA gratuite
+            // Affichage d'un message pendant la génération
             output.innerHTML = "Génération du diagramme pour le problème : " + problem + "<br><br>";
-            
-            // Simuler la réponse de l'IA
+
+            // Simuler la réponse d'une API avec un diagramme d'exemple
             setTimeout(() => {
-                output.innerHTML += "Diagramme d'Ishikawa généré (Exemple simplifié) :<br>";
-                output.innerHTML += "<img src='https://dummyimage.com/600x400/000/fff&text=Ishikawa+Diagram+Exemple' alt='Diagramme d'Ishikawa'>";
+                // Ici, vous remplacez cette partie par l'appel à une vraie API si nécessaire
+                fetch("https://api.example.com/generateDiagram", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ problem: problem })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    output.innerHTML = `<img src="${data.diagramUrl}" alt="Diagramme d'Ishikawa">`;
+                })
+                .catch(error => {
+                    output.innerHTML = "Erreur lors de la génération du diagramme. Veuillez réessayer plus tard.";
+                    console.error("Erreur:", error);
+                });
             }, 2000);
         }
     </script>
