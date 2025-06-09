@@ -1,27 +1,39 @@
-function generateDiagram() {
-    const problem = document.getElementById('problem').value;
-    const output = document.getElementById('diagramOutput');
+# streamlit_app.py
+import streamlit as st
+import requests
 
-    if(problem.trim() === "") {
-        output.innerHTML = "Veuillez entrer un problème pour générer le diagramme.";
-        return;
-    }
+st.set_page_config(page_title="GPT8D – Analyse de non-conformité", layout="wide")
 
-    // Appel à une API (exemple de pseudo-code)
-    fetch("https://api-de-votre-choix.com/genererDiagramme", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ problem: problem })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Affichage du diagramme généré
-        output.innerHTML = `<img src="${data.diagramUrl}" alt="Diagramme d'Ishikawa">`;
-    })
-    .catch(error => {
-        output.innerHTML = "Erreur lors de la génération du diagramme. Veuillez réessayer plus tard.";
-        console.error("Erreur:", error);
-    });
-}
+st.title("🐟 GPT8D – Analyse Ishikawa & 5 Pourquoi")
+st.markdown("Analysez vos non-conformités avec l'IA (DeepSeek / autres LLM)")
+
+# Entrée du problème
+problem = st.text_area("🛑 Décrire le problème de non-conformité rencontré :", height=150)
+
+# Choix du modèle
+model_choice = st.selectbox("📦 Modèle IA utilisé :", ["DeepSeek", "Local (LM Studio / Ollama)"])
+
+# Lancer l’analyse
+if st.button("Analyser le problème"):
+    with st.spinner("🧠 Génération de l’analyse..."):
+        # Appel API (à adapter selon modèle)
+        prompt = f"""
+        Tu es un expert qualité. À partir du problème suivant : "{problem}", génère :
+        1. Un diagramme d'Ishikawa en texte pour identifier les causes potentielles.
+        2. Un 5 Pourquoi orienté Occurrence.
+        3. Un 5 Pourquoi orienté Détection.
+        Formate les réponses pour être facilement copiables dans un rapport 8D.
+        """
+        
+        # Appel de l’API (ex: DeepSeek)
+        response = requests.post("https://api.deepseek.com/v1/chat/completions", headers={
+            "Authorization": "Bearer VOTRE_CLÉ_API"
+        }, json={
+            "model": "deepseek-chat",
+            "messages": [{"role": "user", "content": prompt}]
+        })
+
+        data = response.json()
+        result = data["choices"][0]["message"]["content"]
+        st.markdown(result)
+        st.download_button("📥 Télécharger l’analyse", result, file_name="gpt8d_rapport.md")
